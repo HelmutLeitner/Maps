@@ -33,12 +33,7 @@ use DataValues\GeoCoordinateValue;
  * @author Kim Eik
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class LineParser extends StringValueParser {
-
-	// TODO: use options
-	protected $metaDataSeparator = '~';
-
-	protected $supportGeocoding = true;
+class LineParser extends ElementParser {
 
 	/**
 	 * @see StringValueParser::stringParse
@@ -59,117 +54,6 @@ class LineParser extends StringValueParser {
 		$this->handleCommonParams( $parts, $line );
 
 		return Result::newSuccess( $line );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string[] $coordinateStrings
-	 *
-	 * @return GeoCoordinateValue[]
-	 */
-	protected function parseCoordinates( array $coordinateStrings ) {
-		$coordinates = array();
-		$coordinateParser = new \ValueParsers\GeoCoordinateParser( new \ValueParsers\ParserOptions() );
-
-		$supportsGeocoding = $this->supportGeocoding && \Maps\Geocoders::canGeocode();
-
-		foreach ( $coordinateStrings as $coordinateString ) {
-			if ( $supportsGeocoding ) {
-				$coordinate = \Maps\Geocoders::attemptToGeocode( $coordinateString );
-
-				if ( $coordinate === false ) {
-					// TODO
-				}
-				else {
-					$coordinates[] = $coordinate;
-				}
-			}
-			else {
-				$parseResult = $coordinateParser->parse( $coordinateString );
-
-				if ( $parseResult->isValid() ) {
-					$coordinates[] = $parseResult->getValue();
-				}
-				else {
-					// TODO
-				}
-			}
-		}
-
-		return $coordinates;
-	}
-
-	/**
-	 * This method requires that parameters are positionally correct,
-	 * 1. Link (one parameter) or bubble data (two parameters)
-	 * 2. Stroke data (three parameters)
-	 * 3. Fill data (two parameters)
-	 * e.g ...title~text~strokeColor~strokeOpacity~strokeWeight~fillColor~fillOpacity
-	 *
-	 * @since 3.0
-	 *
-	 * @param array $params
-	 * @param Line $line
-	 */
-	protected function handleCommonParams( array &$params, Line &$line ) {
-		//Handle bubble and link parameters
-
-		//create link data
-		$linkOrTitle = array_shift( $params );
-		if ( $link = $this->isLinkParameter( $linkOrTitle ) ) {
-			$this->setLinkFromParameter( $line , $link );
-		} else {
-			//create bubble data
-			$this->setBubbleDataFromParameter( $line , $params , $linkOrTitle );
-		}
-
-
-		//handle stroke parameters
-		if ( $color = array_shift( $params ) ) {
-			$line->setStrokeColor( $color );
-		}
-
-		if ( $opacity = array_shift( $params ) ) {
-			$line->setStrokeOpacity( $opacity );
-		}
-
-		if ( $weight = array_shift( $params ) ) {
-			$line->setStrokeWeight( $weight );
-		}
-	}
-
-	protected function setBubbleDataFromParameter( Line &$line , &$params , $title ) {
-		if ( $title ) {
-			$line->setTitle( $title );
-		}
-		if ( $text = array_shift( $params ) ) {
-			$line->setText( $text );
-		}
-	}
-
-	protected function setLinkFromParameter( Line &$line , $link ) {
-		if ( filter_var( $link , FILTER_VALIDATE_URL , FILTER_FLAG_SCHEME_REQUIRED ) ) {
-			$line->setLink( $link );
-		} else {
-			$title = \Title::newFromText( $link );
-			$line->setLink( $title->getFullURL() );
-		}
-	}
-
-	/**
-	 * Checks if a string is prefixed with link:
-	 * @static
-	 * @param $link
-	 * @return bool|string
-	 * @since 2.0
-	 */
-	private function isLinkParameter( $link ) {
-		if ( strpos( $link , 'link:' ) === 0 ) {
-			return substr( $link , 5 );
-		}
-
-		return false;
 	}
 
 }

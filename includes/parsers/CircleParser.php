@@ -3,10 +3,10 @@
 namespace Maps;
 
 use ValueParsers\Result;
-use ValueParsers\ResultObject;
+use DataValues\GeoCoordinateValue;
 
 /**
- * ValueParser that parses the string representation of a polygon.
+ * ValueParser that parses the string representation of a circle.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,10 @@ use ValueParsers\ResultObject;
  * @ingroup ValueParser
  *
  * @licence GNU GPL v2+
+ * @author Kim Eik
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class PolygonParser extends ElementParser {
+class CircleParser extends ElementParser {
 
 	/**
 	 * @see StringValueParser::stringParse
@@ -46,13 +47,23 @@ class PolygonParser extends ElementParser {
 	public function stringParse( $value ) {
 		$parts = explode( $this->metaDataSeparator , $value );
 
-		$polygon = new Line( $this->parseCoordinates(
-			explode( ':' , array_shift( $parts ) )
-		) );
+		$firstArg = explode( ':', array_shift( $parts ) );
 
-		$this->handleCommonParams( $parts, $polygon );
+		if ( count( $firstArg ) !== 2 ) {
+			return $this->newErrorResult( 'Need both a circle centre and radius' );
+		}
 
-		return Result::newSuccess( $polygon );
+		$coordinate = $this->parseCoordinates( array( $firstArg[0] ) );
+		$coordinate = $coordinate[0];
+
+		$circle = new Circle(
+			$coordinate,
+			$firstArg[1]
+		);
+
+		$this->handleCommonParams( $parts, $circle );
+
+		return Result::newSuccess( $circle );
 	}
 
 }

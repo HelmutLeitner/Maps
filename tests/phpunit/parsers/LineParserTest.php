@@ -1,6 +1,7 @@
 <?php
 
 namespace Maps\Test;
+
 use ValueParsers\Result;
 use Maps\Line;
 
@@ -33,7 +34,7 @@ use Maps\Line;
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class LineParserTest extends \ValueParsers\Test\StringValueParserTest {
+class LineParserTest extends ElementParserTest {
 
 	/**
 	 * @see ValueParserTestBase::parseProvider
@@ -99,17 +100,6 @@ class LineParserTest extends \ValueParsers\Test\StringValueParserTest {
 	 */
 	protected function getParserClass() {
 		return 'Maps\LineParser';
-	}
-
-	/**
-	 * @see ValueParserTestBase::requireDataValue
-	 *
-	 * @since 3.0
-	 *
-	 * @return boolean
-	 */
-	protected function requireDataValue() {
-		return false;
 	}
 
 }

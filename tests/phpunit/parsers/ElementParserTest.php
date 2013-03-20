@@ -1,12 +1,9 @@
 <?php
 
-namespace Maps;
-
-use ValueParsers\Result;
-use ValueParsers\ResultObject;
+namespace Maps\Test;
 
 /**
- * ValueParser that parses the string representation of a polygon.
+ * Base class with unit tests for the Maps\ElementParser deriving classes.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,34 +22,25 @@ use ValueParsers\ResultObject;
  *
  * @since 3.0
  *
- * @file
- * @ingroup Maps
- * @ingroup ValueParser
+ * @ingroup MapsTest
+ *
+ * @group ValueParsers
+ * @group Maps
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class PolygonParser extends ElementParser {
+abstract class ElementParserTest extends \ValueParsers\Test\StringValueParserTest {
 
 	/**
-	 * @see StringValueParser::stringParse
+	 * @see ValueParserTestBase::requireDataValue
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $value
-	 *
-	 * @return Result
+	 * @return boolean
 	 */
-	public function stringParse( $value ) {
-		$parts = explode( $this->metaDataSeparator , $value );
-
-		$polygon = new Line( $this->parseCoordinates(
-			explode( ':' , array_shift( $parts ) )
-		) );
-
-		$this->handleCommonParams( $parts, $polygon );
-
-		return Result::newSuccess( $polygon );
+	protected function requireDataValue() {
+		return false;
 	}
 
 }

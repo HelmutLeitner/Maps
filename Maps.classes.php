@@ -45,7 +45,9 @@ $classes['MapsGeocode'] 				= __DIR__ . '/includes/parserhooks/Maps_Geocode.php'
 $classes['MapsGeodistance'] 			= __DIR__ . '/includes/parserhooks/Maps_Geodistance.php';
 $classes['MapsMapsDoc'] 				= __DIR__ . '/includes/parserhooks/Maps_MapsDoc.php';
 
+$classes['Maps\CircleParser'] 			= __DIR__ . '/includes/parsers/CircleParser.php';
 $classes['Maps\DistanceParser'] 		= __DIR__ . '/includes/parsers/DistanceParser.php';
+$classes['Maps\ElementParser'] 			= __DIR__ . '/includes/parsers/ElementParser.php';
 $classes['Maps\LineParser'] 			= __DIR__ . '/includes/parsers/LineParser.php';
 $classes['Maps\LocationParser'] 		= __DIR__ . '/includes/parsers/LocationParser.php';
 $classes['Maps\PolygonParser'] 			= __DIR__ . '/includes/parsers/PolygonParser.php';
@@ -67,5 +69,6 @@ $classes['Maps\Test\LineTest'] 			= __DIR__ . '/tests/phpunit/elements/LineTest.
 $classes['Maps\Test\RectangleTest'] 	= __DIR__ . '/tests/phpunit/elements/RectangleTest.php';
 
 $classes['Maps\Test\ParserHookTest'] 	= __DIR__ . '/tests/phpunit/parserhooks/ParserHookTest.php';
+$classes['Maps\Test\ElementParserTest'] 	= __DIR__ . '/tests/phpunit/parsers/ElementParserTest.php';
 
 return $classes;

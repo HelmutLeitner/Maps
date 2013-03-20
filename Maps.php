@@ -213,6 +213,10 @@ $wgParamDefinitions['mapspolygon'] = array(
 	'string-parser' => 'Maps\PolygonParser',
 );
 
+$wgParamDefinitions['mapcircle'] = array(
+	'string-parser' => 'Maps\CircleParser',
+);
+
 $wgParamDefinitions['distance'] = array(
 	'string-parser' => 'Maps\DistanceParser',
 );
