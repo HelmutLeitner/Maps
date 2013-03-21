@@ -3,7 +3,6 @@
 namespace Maps;
 
 use ValueParsers\StringValueParser;
-use ValueParsers\Result;
 use DataValues\GeoCoordinateValue;
 use MapsBaseStrokableElement;
 
@@ -143,21 +142,22 @@ abstract class ElementParser extends StringValueParser {
 		}
 	}
 
-	private function setBubbleDataFromParameter( Line &$line , &$params , $title ) {
+	private function setBubbleDataFromParameter( MapsBaseStrokableElement &$element , &$params , $title ) {
 		if ( $title ) {
-			$line->setTitle( $title );
+			$element->setTitle( $title );
 		}
+
 		if ( $text = array_shift( $params ) ) {
-			$line->setText( $text );
+			$element->setText( $text );
 		}
 	}
 
-	private function setLinkFromParameter( Line &$line , $link ) {
+	private function setLinkFromParameter( MapsBaseStrokableElement &$element , $link ) {
 		if ( filter_var( $link , FILTER_VALIDATE_URL , FILTER_FLAG_SCHEME_REQUIRED ) ) {
-			$line->setLink( $link );
+			$element->setLink( $link );
 		} else {
 			$title = \Title::newFromText( $link );
-			$line->setLink( $title->getFullURL() );
+			$element->setLink( $title->getFullURL() );
 		}
 	}
 

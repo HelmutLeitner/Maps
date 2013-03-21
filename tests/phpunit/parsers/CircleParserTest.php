@@ -51,37 +51,30 @@ class CircleParserTest extends ElementParserTest {
 
 		$valid[] = array(
 			array( 49.83798245308486, 2.724609375 ),
-			0
+			'0'
 		);
 
 		$valid[] = array(
 			array( 52.05249047600102, 8.26171875 ),
-			42
+			'42'
 		);
 
 		$valid[] = array(
 			array( -52.05249047600102, -8.26171875 ),
-			9001
+			'9001'
 		);
 
 		$valid[] = array(
 			array( 52.05249047600102, -8.26171875 ),
-			326844.60518253763
+			'326844.605'
 		);
-q();
+
 		foreach ( $valid as $values ) {
-			$input = array();
-			$output = array();
-
-			foreach ( $values as $value ) {
-				$input[] = implode( ',', $value );
-				$output[] = new Circle(
-					new \DataValues\GeoCoordinateValue( $value[0][0], $value[0][1] ),
-					$value[1]
-				);
-			}
-
-			$input = implode( ':', $input );
+			$input = implode( ',', $values[0] ) . ':' . $values[1];
+			$output = new Circle(
+				new \DataValues\GeoCoordinateValue( $values[0][0], $values[0][1] ),
+				$values[1]
+			);
 
 			$argLists[] = array( $input, Result::newSuccess( $output ) );
 		}

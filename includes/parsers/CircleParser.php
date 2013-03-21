@@ -56,9 +56,11 @@ class CircleParser extends ElementParser {
 		$coordinate = $this->parseCoordinates( array( $firstArg[0] ) );
 		$coordinate = $coordinate[0];
 
+		// TODO: validate that radius is float
+
 		$circle = new Circle(
 			$coordinate,
-			$firstArg[1]
+			(float)$firstArg[1]
 		);
 
 		$this->handleCommonParams( $parts, $circle );

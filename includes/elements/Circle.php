@@ -1,8 +1,10 @@
 <?php
 
 namespace Maps;
-use \Maps\Location;
+
+use Maps\Location;
 use DataValues\GeoCoordinateValue;
+use InvalidArgumentException;
 
 /**
  * Class representing a circle.
@@ -33,27 +35,50 @@ use DataValues\GeoCoordinateValue;
 class Circle extends \MapsBaseFillableElement {
 
 	/**
+	 * The center of the circle.
+	 *
+	 * @since 3.0
+	 *
 	 * @var GeoCoordinateValue
 	 */
 	protected $circleCentre;
 
 	/**
-	 * @var integer|float
+	 * The circles radius in metres.
+	 *
+	 * @since 3.0
+	 *
+	 * @var float|int
 	 */
 	protected $circleRadius;
 
 	/**
+	 * Constructor.
+	 *
+	 * @since 3.0
+	 *
 	 * @param GeoCoordinateValue $circleCentre
-	 * @param integer|float $circleRadius
+	 * @param float|int $circleRadius
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	public function __construct( GeoCoordinateValue $circleCentre , $circleRadius ) {
 		parent::__construct();
 
 		$this->setCircleCentre( $circleCentre );
+
+		if ( !is_int( $circleRadius ) && !is_float( $circleRadius ) ) {
+			throw new InvalidArgumentException( 'The $circleRadius needs to be a float or int' );
+		}
+
 		$this->setCircleRadius( $circleRadius );
 	}
 
 	/**
+	 * Returns the centre of the circle.
+	 *
+	 * @since 3.0
+	 *
 	 * @return GeoCoordinateValue
 	 */
 	public function getCircleCentre() {
@@ -61,6 +86,10 @@ class Circle extends \MapsBaseFillableElement {
 	}
 
 	/**
+	 * Sets the centre of the circle.
+	 *
+	 * @since 3.0
+	 *
 	 * @param GeoCoordinateValue $circleCentre
 	 */
 	public function setCircleCentre( GeoCoordinateValue $circleCentre ) {
@@ -68,19 +97,35 @@ class Circle extends \MapsBaseFillableElement {
 	}
 
 	/**
-	 * @return integer|float
+	 * Returns the circles radius in metres.
+	 *
+	 * @since 3.0
+	 *
+	 * @return float|int
 	 */
 	public function getCircleRadius() {
 		return $this->circleRadius;
 	}
 
 	/**
-	 * @param integer|float $circleRadius
+	 * Sets the circles radius in metres.
+	 *
+	 * @since 3.0
+	 *
+	 * @param float|int $circleRadius
 	 */
 	public function setCircleRadius( $circleRadius ) {
 		$this->circleRadius = $circleRadius;
 	}
 
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $defText
+	 * @param string $defTitle
+	 *
+	 * @return array
+	 */
 	public function getJSONObject( $defText = '' , $defTitle = '' ) {
 		$parentArray = parent::getJSONObject( $defText , $defTitle );
 
@@ -89,7 +134,7 @@ class Circle extends \MapsBaseFillableElement {
 				'lon' => $this->getCircleCentre()->getLongitude(),
 				'lat' => $this->getCircleCentre()->getLatitude()
 			) ,
-			'radius' => intval( $this->getCircleRadius() ),
+			'radius' => intval( $this->getCircleRadius() ), // FIXME: retain precision
 		);
 
 		return array_merge( $parentArray, $array );
