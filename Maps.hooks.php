@@ -66,7 +66,9 @@ final class MapsHooks {
 			'parserhooks/Geodistance',
 			'parserhooks/MapsDoc',
 
+			'parsers/CircleParser',
 			'parsers/DistanceParser',
+			'parsers/LineParser',
 			'parsers/LineParser',
 			'parsers/LocationParser',
 			'parsers/WmsOverlayParser',
